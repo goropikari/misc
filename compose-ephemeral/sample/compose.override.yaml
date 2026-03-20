@@ -1,0 +1,7 @@
+services:
+  web:
+    ports: !override
+      - :80
+  web2:
+    ports: !override
+      - :80

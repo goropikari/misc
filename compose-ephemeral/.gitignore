@@ -1,0 +1,11 @@
+# Go
+bin/
+dist/
+*.exe
+*.test
+*.prof
+compose-ephemeral
+
+# OS
+.DS_Store
+Thumbs.db
