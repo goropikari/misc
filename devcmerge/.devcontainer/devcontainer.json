@@ -1,0 +1,7 @@
+{
+  "name": "Go",
+  "image": "mcr.microsoft.com/devcontainers/go:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  }
+}

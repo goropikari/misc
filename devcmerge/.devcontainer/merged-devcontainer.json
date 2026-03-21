@@ -1,0 +1,8 @@
+{
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/hoge:1": {}
+  },
+  "image": "mcr.microsoft.com/devcontainers/go:latest",
+  "name": "Override"
+}
