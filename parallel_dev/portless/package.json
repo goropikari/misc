@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "portless": "^0.7.2"
+  },
+  "scripts": {
+    "portless": "portless"
+  }
+}

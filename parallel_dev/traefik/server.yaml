@@ -1,0 +1,9 @@
+services:
+  web:
+    image: nginx:latest
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
