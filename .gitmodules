@@ -1,0 +1,12 @@
+[submodule "tools/gomut"]
+	path = tools/gomut
+	url = git@github.com:goropikari/gomut.git
+[submodule "tools/gocov"]
+	path = tools/gocov
+	url = git@github.com:goropikari/gocov.git
+[submodule "tools/goaaa"]
+	path = tools/goaaa
+	url = git@github.com:goropikari/goaaa.git
+[submodule "tools/gocomment"]
+	path = tools/gocomment
+	url = git@github.com:goropikari/gocomment.git
