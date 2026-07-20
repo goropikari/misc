@@ -1,0 +1,49 @@
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - asciicheck
+    - bodyclose
+    - cyclop
+    - dupl
+    - errcheck
+    - gocritic
+    - gosec
+    - ineffassign
+    - testifylint
+    - testpackage
+    - wsl_v5
+    - usetesting
+    - revive
+  settings:
+    revive:
+      rules:
+        - name: package-comments
+          disabled: true
+        - name: redundant-import-alias
+          disabled: false
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+      - "^sample/"
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+      - "^sample/"

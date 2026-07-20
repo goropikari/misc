@@ -1,0 +1,59 @@
+receivers:
+  filelog/demo:
+    include: [/logs/*.jsonl]
+    start_at: beginning
+    include_file_name: false
+    include_file_path: false
+    operators:
+      - type: json_parser
+        id: app_json
+        parse_from: body
+        parse_to: attributes
+        on_error: send
+
+  filelog/docker:
+    include: [/var/lib/docker/containers/*/*-json.log]
+    start_at: beginning
+    include_file_path: true
+    operators:
+      - type: json_parser
+        id: docker_json
+        parse_from: body
+        parse_to: attributes
+      - type: move
+        from: attributes.log
+        to: body
+      - type: add
+        field: attributes.source
+        value: docker
+
+processors:
+  batch:
+
+exporters:
+  otlphttp/openobserve:
+    endpoint: http://openobserve:5080/api/default
+    headers:
+      Authorization: Basic YWRtaW5AZXhhbXBsZS5jb206cGFzc3dvcmQxMjM=
+      stream-name: demo
+  otlphttp/openobserve_docker:
+    endpoint: http://openobserve:5080/api/default
+    headers:
+      Authorization: Basic YWRtaW5AZXhhbXBsZS5jb206cGFzc3dvcmQxMjM=
+      stream-name: docker
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    default_labels_enabled:
+      exporter: false
+      job: true
+
+service:
+  pipelines:
+    logs:
+      receivers: [filelog/demo]
+      processors: [batch]
+      exporters: [otlphttp/openobserve, loki]
+    logs/docker:
+      receivers: [filelog/docker]
+      processors: [batch]
+      exporters: [otlphttp/openobserve_docker]

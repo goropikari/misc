@@ -1,0 +1,96 @@
+name: observe-compare
+
+services:
+  log-server-a:
+    build: ./server
+    container_name: observe-log-server-a
+    user: "0:0"
+    environment:
+      LOG_INTERVAL: 2s
+      SERVICE_NAME: api-server-a
+      LOG_FILE: /logs/api-server-a.jsonl
+    ports:
+      - "8088:8080"
+    volumes:
+      - app-logs:/logs
+    labels:
+      observe.role: demo-server
+
+  log-server-b:
+    build: ./server
+    container_name: observe-log-server-b
+    user: "0:0"
+    environment:
+      LOG_INTERVAL: 3s
+      SERVICE_NAME: api-server-b
+      LOG_FILE: /logs/api-server-b.jsonl
+    ports:
+      - "8089:8080"
+    volumes:
+      - app-logs:/logs
+    labels:
+      observe.role: demo-server
+
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.129.1
+    container_name: observe-collector
+    user: "0:0"
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./collector/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - app-logs:/logs:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    depends_on:
+      - log-server-a
+      - log-server-b
+      - openobserve
+      - loki
+
+  dozzle:
+    image: amir20/dozzle:v8.14.8
+    container_name: observe-dozzle
+    ports:
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  openobserve:
+    image: openobserve/openobserve:v0.15.1
+    container_name: observe-openobserve
+    environment:
+      ZO_ROOT_USER_EMAIL: admin@example.com
+      ZO_ROOT_USER_PASSWORD: password123
+      ZO_DATA_DIR: /data
+    ports:
+      - "5080:5080"
+    volumes:
+      - openobserve-data:/data
+
+  loki:
+    image: grafana/loki:3.5.0
+    container_name: observe-loki
+    command: -config.file=/etc/loki/config.yaml
+    volumes:
+      - ./grafana/loki.yaml:/etc/loki/config.yaml:ro
+      - loki-data:/loki
+
+  grafana:
+    image: grafana/grafana:12.0.2
+    container_name: observe-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - loki
+
+volumes:
+  openobserve-data:
+  loki-data:
+  grafana-data:
+  app-logs:

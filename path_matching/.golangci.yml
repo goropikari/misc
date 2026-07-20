@@ -1,0 +1,31 @@
+run:
+  timeout: 5m
+  tests: true
+
+# 設定ファイルのバージョンを明示的に指定
+version: 2
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - revive
+    - goconst
+    - misspell
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  revive:
+    set-rules:
+      ci-parameter-name:
+        severity: warning
+        disabled: false
+
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0

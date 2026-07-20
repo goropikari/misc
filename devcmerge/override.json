@@ -3,6 +3,6 @@
     "ghcr.io/devcontainers/features/hoge:1": {}
   },
   "mounts": [
-	"source=devcontainer,target=/workspace,type=bind,consistency=cached"
+    "source=devcontainer,target=/workspace,type=bind,consistency=cached"
   ]
 }
