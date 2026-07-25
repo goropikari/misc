@@ -10,3 +10,6 @@
 [submodule "tools/gocomment"]
 	path = tools/gocomment
 	url = git@github.com:goropikari/gocomment.git
+[submodule "tools/gormalias"]
+	path = tools/gormalias
+	url = git@github.com:goropikari/gormalias.git
