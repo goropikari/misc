@@ -1,0 +1,23 @@
+[
+  {
+    "uid": { "type": "User", "id": "alice" },
+    "attrs": { "name": "Alice" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "User", "id": "bob" },
+    "attrs": { "name": "Bob" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Document", "id": "report" },
+    "attrs": {
+      "owner": { "__entity": { "type": "User", "id": "alice" } },
+      "readers": [
+        { "__entity": { "type": "User", "id": "bob" } }
+      ],
+      "classification": "confidential"
+    },
+    "parents": []
+  }
+]

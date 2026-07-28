@@ -1,0 +1,12 @@
+entity Role;
+
+entity User in [Role];
+
+entity Resource {
+    environment: String,
+};
+
+action Read, Write, Delete appliesTo {
+    principal: User,
+    resource: Resource,
+};

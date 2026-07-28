@@ -1,0 +1,14 @@
+entity User {
+    name: String,
+};
+
+entity Document {
+    owner: User,
+    readers: Set<User>,
+    classification: String,
+};
+
+action View, Edit appliesTo {
+    principal: User,
+    resource: Document,
+};
