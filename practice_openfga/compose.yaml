@@ -1,0 +1,13 @@
+services:
+  openfga:
+    image: openfga/openfga:v1.8.6
+    command: run
+    ports:
+      - "8080:8080" # HTTP API
+      - "8081:8081" # gRPC API
+      - "3000:3000" # Playground
+    environment:
+      OPENFGA_DATASTORE_ENGINE: memory
+      OPENFGA_LOG_FORMAT: json
+      # The built-in Playground is served from https://play.fga.dev.
+      OPENFGA_HTTP_CORS_ALLOWED_ORIGINS: https://play.fga.dev
