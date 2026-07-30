@@ -27,9 +27,14 @@ store_id="$(curl --silent --fail --request POST "${api_url}/stores" \
   --data '{"name":"openfga-sample"}' | json_value id)"
 echo "Created store: ${store_id}"
 
+model_json="$(docker run --rm \
+  --volume "${root_dir}:/workspace:ro" \
+  openfga/cli:v0.7.14 \
+  model transform --file /workspace/model.fga --output-format json)"
+
 model_id="$(curl --silent --fail --request POST "${api_url}/stores/${store_id}/authorization-models" \
   --header 'Content-Type: application/json' \
-  --data-binary "@${root_dir}/model.json" | json_value authorization_model_id)"
+  --data-binary "${model_json}" | json_value authorization_model_id)"
 echo "Created authorization model: ${model_id}"
 
 curl --silent --fail --request POST "${api_url}/stores/${store_id}/write" \
