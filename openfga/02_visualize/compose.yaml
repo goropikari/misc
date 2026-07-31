@@ -1,0 +1,48 @@
+services:
+  openfga:
+    image: openfga/openfga:v1.18.1
+    command: run --datastore-engine memory
+    networks: [fga]
+
+  openfga-import:
+    image: openfga/cli:v0.7.14
+    depends_on: [openfga]
+    volumes:
+      - ./demo:/demo:ro
+    environment:
+      FGA_API_URL: http://openfga:8080
+    command: store import --file /demo/store.fga.yaml
+    networks: [fga]
+
+  openfga-runtime:
+    image: curlimages/curl:8.10.1
+    user: "0:0"
+    depends_on:
+      openfga-import:
+        condition: service_completed_successfully
+    volumes:
+      - fga-runtime:/run/fga
+      - ./demo:/demo:ro
+    entrypoint: ["/bin/sh", "/demo/runtime-init.sh"]
+    networks: [fga]
+
+  fgalens:
+    build: .
+    depends_on:
+      openfga-runtime:
+        condition: service_completed_successfully
+    environment:
+      OPENFGA_API_URL: http://openfga:8080
+      OPENFGA_AUTH_TOKEN: demo-token
+      OPENFGA_VISUALIZER_ADDR: 0.0.0.0:8080
+    volumes:
+      - fga-runtime:/run/fga:ro
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks: [fga]
+
+networks:
+  fga:
+
+volumes:
+  fga-runtime:

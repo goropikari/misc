@@ -1,0 +1,49 @@
+name: FGA Lens Demo
+model: |
+  model
+    schema 1.1
+
+  type user
+
+  type group
+    relations
+      define member: [user]
+
+  type folder
+    relations
+      define viewer: [user, group#member]
+      define parent: [folder]
+
+  type document
+    relations
+      define parent: [folder]
+      define viewer: [user, group#member] or viewer from parent
+      define editor: [user]
+tuples:
+  - user: user:alice
+    relation: member
+    object: group:engineering
+  - user: user:bob
+    relation: member
+    object: group:engineering
+  - user: group:engineering#member
+    relation: viewer
+    object: folder:platform
+  - user: folder:root
+    relation: parent
+    object: folder:platform
+  - user: folder:platform
+    relation: parent
+    object: document:design
+  - user: user:alice
+    relation: viewer
+    object: document:design
+  - user: user:carol
+    relation: editor
+    object: document:design
+  - user: folder:product
+    relation: parent
+    object: document:roadmap
+  - user: user:dave
+    relation: editor
+    object: document:roadmap
