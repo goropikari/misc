@@ -1,0 +1,64 @@
+services:
+  postgres:
+    image: postgres:17.7
+    environment:
+      POSTGRES_DB: authz
+      POSTGRES_USER: authz
+      POSTGRES_PASSWORD: authz
+    ports:
+      - "5432:5432"
+    volumes:
+      - authz-postgres-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U authz -d authz"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  authz:
+    build:
+      context: .
+      args:
+        APP: authz
+    environment:
+      AUTHZ_DATABASE_URL: postgres://authz:authz@postgres:5432/authz?sslmode=disable
+      AUTHZ_SEED_DEMO: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  demo-a:
+    build:
+      context: .
+      args:
+        APP: demo
+    environment:
+      AUTHZ_URL: http://authz:8080
+      DEMO_PRODUCT: demo-a
+    depends_on:
+      - authz
+
+  demo-b:
+    build:
+      context: .
+      args:
+        APP: demo
+    environment:
+      AUTHZ_URL: http://authz:8080
+      DEMO_PRODUCT: demo-b
+    depends_on:
+      - authz
+
+  envoy:
+    image: envoyproxy/envoy:v1.31-latest
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      - demo-a
+      - demo-b
+
+volumes:
+  authz-postgres-data:

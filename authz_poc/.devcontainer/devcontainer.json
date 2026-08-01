@@ -1,0 +1,17 @@
+{
+  "name": "gomut",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "mounts": [
+    {
+      "source": "gomut-codex-home",
+      "target": "/home/vscode/.codex",
+      "type": "volume"
+    }
+  ],
+  "remoteUser": "vscode"
+}
