@@ -13,3 +13,6 @@
 [submodule "tools/gormalias"]
 	path = tools/gormalias
 	url = git@github.com:goropikari/gormalias.git
+[submodule "tools/gostructfmt"]
+	path = tools/gostructfmt
+	url = git@github.com:goropikari/gostructfmt.git
