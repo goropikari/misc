@@ -16,3 +16,9 @@
 [submodule "tools/gostructfmt"]
 	path = tools/gostructfmt
 	url = git@github.com:goropikari/gostructfmt.git
+[submodule "tools/code-strength"]
+	path = tools/code-strength
+	url = git@github.com:goropikari/code-strength.git
+[submodule "tools/goreadable"]
+	path = tools/goreadable
+	url = git@github.com:goropikari/goreadable.git
