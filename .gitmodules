@@ -28,3 +28,6 @@
 [submodule "tools/git-wt"]
 	path = tools/git-wt
 	url = git@github.com:goropikari/git-wt.git
+[submodule "tools/gotestrun"]
+	path = tools/gotestrun
+	url = git@github.com:goropikari/gotestrun.git
