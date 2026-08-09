@@ -22,3 +22,9 @@
 [submodule "tools/goreadable"]
 	path = tools/goreadable
 	url = git@github.com:goropikari/goreadable.git
+[submodule "tools/git-br"]
+	path = tools/git-br
+	url = git@github.com:goropikari/git-br.git
+[submodule "tools/git-wt"]
+	path = tools/git-wt
+	url = git@github.com:goropikari/git-wt.git
