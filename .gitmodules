@@ -31,3 +31,6 @@
 [submodule "tools/gotestrun"]
 	path = tools/gotestrun
 	url = git@github.com:goropikari/gotestrun.git
+[submodule "tools/gonextuse"]
+	path = tools/gonextuse
+	url = git@github.com:goropikari/gonextuse.git
